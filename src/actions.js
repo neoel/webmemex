@@ -15,6 +15,7 @@ export function initCanvas() {
         {
             let props = {x: 100, y: 100, width: 400, height: 50}
             let itemId = dispatch(canvas.createItem({docId: 'emptyItem', props}))
+            dispatch(setEmptyItemState({itemId, props: {}}))
             dispatch(canvas.centerItem({itemId}))
             dispatch(canvas.focusItem({itemId}))
         }
@@ -76,8 +77,13 @@ export function navigateFromLink({url}) {
 export function navigateTo({itemId, docId, userInput}) {
     return function (dispatch, getState) {
         dispatch(populateEmptyItem({itemId, docId, userInput}))
-        dispatch(drawStar({itemId}))
-        dispatch(canvas.expandItem({itemId}))
+        if (canvas.getItem(getState().canvas, itemId).centered) {
+            dispatch(drawStar({itemId}))
+            dispatch(canvas.expandItem({itemId}))
+        }	
+        else {
+            dispatch(canvas.setItemRatio({itemId, ratio: 4/3, keepFixed: 'width', animate: true}))
+        }
         dispatch(canvas.focusItem({itemId}))
     }
 }
@@ -162,7 +168,28 @@ export function handleDropOnCanvas({x, y, event}) {
     }
 }
 
-export function handleTap({itemId}) {
+export function handleTapCanvas({x, y}) {
+    return function (dispatch, getState) {
+        let width = 300
+        let height = 50
+        let props = {
+            x: x-width/2,
+            y: y-height/2,
+            width,
+            height,
+        }
+        let itemId = dispatch(canvas.createItem({docId: 'emptyItem', props}))
+        dispatch(canvas.focusItem({itemId}))
+        dispatch(setEmptyItemState({
+            itemId,
+            props: {
+                hideOnBlur: true,
+            }
+        }))
+    }
+}
+
+export function handleTapItem({itemId}) {
     return function (dispatch, getState) {
         // Focus on the item
         dispatch(canvas.focusItem({itemId}))
@@ -223,5 +250,5 @@ export function updateAutoSuggest({itemId}) {
 }
 
 export let setAutoSuggestSuggestions = createAction()
-export let setEmptyItemValue = createAction()
+export let setEmptyItemState = createAction()
 export let updateEmptyItemSuggestions = createAction()

@@ -34,6 +34,7 @@ export let updateWindowSize = createActionWithMetaArgs({
 })
 export let relocateItem = createAction()
 export let resizeItem = createAction()
+export let setItemRatio = createAction()
 export let scaleItem = createAction()
 export let expandItem = createActionWithMetaArgs({
     currentView: getCurrentView,
@@ -49,6 +50,7 @@ export let unfocus = createAction()
 export let signalItemTapped = createAction()
 export let signalItemDraggedOut = createAction()
 export let signalDropOnCanvas = createAction()
+export let signalCanvasTapped = createAction()
 
 // Utils
 
