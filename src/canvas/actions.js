@@ -44,12 +44,14 @@ export let setItemDragged = createAction()
 export let focusItem = createAction()
 export let unfocusItem = createAction()
 export let unfocus = createAction()
+export let setProps = createAction()
 
 // Actions not listened to by the canvas module itself
 
 export let signalItemTapped = createAction()
 export let signalItemDraggedOut = createAction()
 export let signalDropOnCanvas = createAction()
+export let signalReceivedDrop = createAction()
 export let signalCanvasTapped = createAction()
 
 // Utils
