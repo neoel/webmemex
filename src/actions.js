@@ -15,6 +15,7 @@ export function initCanvas() {
         {
             let props = {x: 100, y: 100, width: 400, height: 50}
             let itemId = dispatch(canvas.createItem({docId: 'emptyItem', props}))
+            dispatch(setEmptyItemState({itemId, props: {}}))
             dispatch(canvas.centerItem({itemId}))
             dispatch(canvas.focusItem({itemId}))
         }
@@ -31,7 +32,6 @@ export function drawStar({docId, itemId}) {
             docId = canvas.getItem(state.canvas, itemId).docId
         }
         let {targetDocIds, sourceDocIds} = storage.getFriends(state.storage, docId)
-        targetDocIds.push('emptyItem')
         dispatch(canvas.centerDocWithFriends({docId, itemId, targetDocIds, sourceDocIds, animate: true}))
 
         // Show second level friends
@@ -153,6 +153,12 @@ export function handleTapCanvas({x, y}) {
         }
         let itemId = dispatch(canvas.createItem({docId: 'emptyItem', props}))
         dispatch(canvas.focusItem({itemId}))
+        dispatch(setEmptyItemState({
+            itemId,
+            props: {
+                hideOnBlur: true,
+            }
+        }))
     }
 }
 
@@ -164,14 +170,9 @@ export function handleTapItem({itemId}) {
         let item = canvas.getItem(getState().canvas, itemId)
         if (item.docId === 'emptyItem')
             return
-        if (item.centered) {
-            // Only expand iframe items (TODO make simple type test)
-            if (storage.getDoc(getState().storage, item.docId).url)
-                dispatch(canvas.expandItem({itemId, animate: true}))
-        }
-        else {
-            dispatch(drawStar({itemId}))
-        }
+        // Only expand iframe items (TODO make simple type test)
+        if (storage.getDoc(getState().storage, item.docId).url)
+            dispatch(canvas.expandItem({itemId, animate: true}))
     }
 }
 
@@ -217,5 +218,5 @@ export function updateAutoSuggest({itemId}) {
 }
 
 export let setAutoSuggestSuggestions = createAction()
-export let setEmptyItemValue = createAction()
+export let setEmptyItemState = createAction()
 export let updateEmptyItemSuggestions = createAction()
