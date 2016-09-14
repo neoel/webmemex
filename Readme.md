@@ -43,7 +43,12 @@ The code is designed somewhat modular, and could be seen as three repos in one: 
 * Storage is currently implemented as part of the redux store, using [`redux-pouchdb`](https://github.com/vicentedealencar/redux-pouchdb) for synchronising its state in Redux with a [PouchDB] database in the browser's offline storage.
 
 
+##### Creating thumbnails for iframes
+Using [HTML2Canvas]
+
+
 [React]: https://facebook.github.io/react
 [Redux]: http://redux.js.org
 [PouchDB]: https://pouchdb.com/
 [Node]: https://nodejs.org
+[HTML2Canvas]: https://github.com/niklasvh/html2canvas

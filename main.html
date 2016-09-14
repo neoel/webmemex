@@ -9,4 +9,18 @@
 Loading.. or crashed?
 </main>
 
+<script src="lib/html2canvas.min.js"></script>
 <script src="main.js"></script>
+
+
+<script type="text/javascript">
+	window.onmessage = function (e) {
+		var data = JSON.parse(e.data);
+		debugger;
+		var img = document.createElement('img');
+		img.src = data.data
+
+		document.body.appendChild(img);
+		console.log('Created screenshot');
+	}
+</script>
